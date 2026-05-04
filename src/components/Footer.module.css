@@ -1,0 +1,11 @@
+.footer {
+  background: #060f08;
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 40px 5vw;
+  text-align: center;
+}
+.inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.logo { height: 48px; object-fit: contain; opacity: .85; }
+.inner p { color: rgba(255,255,255,.4); font-size: .85rem; font-weight: 600; }
+.inner strong { color: var(--green2); }
+.copy { font-size: .76rem !important; color: rgba(255,255,255,.22) !important; }

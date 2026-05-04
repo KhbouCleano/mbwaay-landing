@@ -1,0 +1,63 @@
+.section {
+  background: #f2f9f4;
+  padding: 100px 5vw;
+}
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.label {
+  text-align: center; font-size: .78rem; font-weight: 800;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 12px;
+}
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  text-align: center; letter-spacing: .04em;
+  color: #111; margin-bottom: 14px;
+}
+.title span { color: var(--red); }
+.subtitle {
+  text-align: center; color: var(--gray);
+  font-size: 1.05rem; margin-bottom: 56px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 34px 26px;
+  text-align: center;
+  box-shadow: 0 4px 28px rgba(0,0,0,.06);
+  border: 2px solid transparent;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  animation: fadeUp .5s ease both;
+}
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 44px rgba(26,122,46,.13);
+  border-color: var(--green2);
+}
+
+.iconWrap {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem; margin: 0 auto 20px;
+  box-shadow: 0 6px 22px rgba(26,122,46,.28);
+}
+.card h3 { font-size: 1.02rem; font-weight: 900; color: #111; margin-bottom: 10px; }
+.card p  { font-size: .86rem; color: var(--gray); line-height: 1.65; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .section { padding: 70px 5vw; }
+}

@@ -1,0 +1,123 @@
+.section {
+  /* Dégradé: vert clair en haut à gauche → blanc au milieu → rouge en bas à droite */
+  background: linear-gradient(
+    135deg,
+    #8fce00 0%,
+    #b8e34a 15%,
+    #ffffff 40%,
+    #ffffff 55%,
+    #ffffff 70%,
+    #ffffff 85%,
+    #ffffff 95%,
+    #ffffff 100%
+  );
+  padding: 100px 5vw;
+  position: relative;
+}
+
+/* Overlay pour améliorer la lisibilité du texte */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.label {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #274e13;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #274e13;
+  margin-bottom: 52px;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.title span {
+  color: #8fce00;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(143, 206, 0, 0.3);
+  border-radius: 16px;
+  padding: 22px 14px;
+  text-align: center;
+  cursor: default;
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #8fce00;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.chipIcon {
+  font-size: 2rem;
+  color: #274e13;
+  transition: transform 0.2s ease;
+}
+
+.chip:hover .chipIcon {
+  transform: scale(1.1);
+}
+
+.chipLabel {
+  font-size: 0.83rem;
+  font-weight: 800;
+  color: #274e13;
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: 70px 5vw;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .chip {
+    padding: 16px 10px;
+  }
+
+  .chipIcon {
+    font-size: 1.6rem;
+  }
+}

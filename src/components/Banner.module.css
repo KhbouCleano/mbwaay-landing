@@ -1,0 +1,26 @@
+.banner {
+  background: linear-gradient(90deg, var(--green) 0%, var(--green2) 50%, var(--green) 100%);
+  overflow: hidden; white-space: nowrap;
+  height: 38px; display: flex; align-items: center;
+}
+.track {
+  display: inline-flex;
+  animation: marquee 22s linear infinite;
+}
+.text {
+  font-size: .78rem; font-weight: 800;
+  color: #fff; letter-spacing: .06em;
+  text-transform: uppercase; padding-right: 40px;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.33%); }
+}
+.logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 6px;
+}

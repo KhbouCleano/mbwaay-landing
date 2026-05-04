@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:   #1a7a2e;
+  --green2:  #25a83d;
+  --green3:  #5dd67a;
+  --red:     #c0152a;
+  --red2:    #e8192f;
+  --blue:    #1565c0;
+  --white:   #ffffff;
+  --off:     #f2f9f4;
+  --dark:    #0d1f12;
+  --gray:    #5a6e5c;
+  --shadow:  0 8px 40px rgba(0,0,0,.18);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #fff;
+  color: #111;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f0f0f0; }
+::-webkit-scrollbar-thumb { background: var(--green2); border-radius: 4px; }
