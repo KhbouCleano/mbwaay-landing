@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import styles from './OrderForm.module.css';
-import { PACK_PRICES, saveOrder, exportToExcel } from '../utils/excel.js';
+import emailjs from '@emailjs/browser';
 
-const PRODUCTS = Object.keys(PACK_PRICES);
+// ── CONFIG EMAILJS — remplacez ces 3 valeurs ──────────────
+const EJS_SERVICE  = 'service_bwd9ism';
+const EJS_TEMPLATE = 'template_9ec15u5';
+const EJS_KEY      = 'uzIU9Cu-APsEGhXVf';
+// ──────────────────────────────────────────────────────────
 
 const INITIAL = {
   fname: '', lname: '', phone: '', address: '', wilaya: '',
@@ -26,28 +30,11 @@ const IcoTruck = () => (
     <circle cx="18.5" cy="18.5" r="2.5"/>
   </svg>
 );
-const IcoShield = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-    <polyline points="9 12 11 14 15 10"/>
-  </svg>
-);
 const IcoCard = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <rect x="1" y="4" width="22" height="16" rx="2"/>
     <line x1="1" y1="10" x2="23" y2="10"/>
-  </svg>
-);
-const IcoGift = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="20 12 20 22 4 22 4 12"/>
-    <rect x="2" y="7" width="20" height="5"/>
-    <line x1="12" y1="22" x2="12" y2="7"/>
-    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
   </svg>
 );
 const IcoCart = () => (
@@ -100,15 +87,16 @@ const FOOTER_TRUST = [
 
 /* ── Component ──────────────────────────────── */
 export default function OrderForm() {
-  const [form, setForm] = useState(INITIAL);
-  const [qty, setQty] = useState(1);
+  const [form, setForm]       = useState(INITIAL);
+  const [qty, setQty]         = useState(1);
   const [success, setSuccess] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
+  const [errors, setErrors]   = useState({});
 
   const originalPrice = 17;
-  const salePrice = 15;
-  const total = qty * salePrice;
-  const savings = (originalPrice - salePrice) * qty;
+  const salePrice     = 15;
+  const total         = qty * salePrice;
+  const savings       = (originalPrice - salePrice) * qty;
 
   function set(field, value) {
     setForm(f => ({ ...f, [field]: value }));
@@ -117,41 +105,48 @@ export default function OrderForm() {
 
   function validate() {
     const e = {};
-    if (!form.fname.trim()) e.fname = 'Requis';
-    if (!form.lname.trim()) e.lname = 'Requis';
-    if (!form.phone.trim()) e.phone = 'Requis';
+    if (!form.fname.trim())   e.fname   = 'Requis';
+    if (!form.lname.trim())   e.lname   = 'Requis';
+    if (!form.phone.trim())   e.phone   = 'Requis';
     if (!form.address.trim()) e.address = 'Requis';
-    if (!form.wilaya) e.wilaya = 'Requis';
+    if (!form.wilaya)         e.wilaya  = 'Requis';
     return e;
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
 
+    setSending(true);
+
     const now = new Date();
-    const order = {
-      'Date': now.toLocaleDateString('fr-FR'),
-      'Heure': now.toLocaleTimeString('fr-FR'),
-      'Prénom': form.fname,
-      'Nom': form.lname,
-      'Téléphone': form.phone,
-      'Wilaya': form.wilaya,
-      'Adresse': form.address,
-      'Produit': form.product,
-      'Quantité': qty,
-      'Prix unitaire': salePrice,
-      'Total (TND)': total,
-      'Notes': form.notes || '—',
-      'Statut': 'En attente',
+    const templateParams = {
+      fname:   form.fname,
+      lname:   form.lname,
+      phone:   form.phone,
+      wilaya:  form.wilaya,
+      address: form.address,
+      product: form.product,
+      qty:     qty,
+      total:   `${total} TND`,
+      savings: `${savings} TND`,
+      notes:   form.notes || '—',
+      date:    now.toLocaleDateString('fr-FR'),
+      heure:   now.toLocaleTimeString('fr-FR'),
     };
 
-    const allOrders = saveOrder(order);
-    exportToExcel(allOrders);
-    setSuccess(true);
-    setForm(INITIAL);
-    setQty(1);
-    setTimeout(() => setSuccess(false), 6000);
+    try {
+      await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, templateParams, EJS_KEY);
+      setSuccess(true);
+      setForm(INITIAL);
+      setQty(1);
+      setTimeout(() => setSuccess(false), 6000);
+    } catch (err) {
+      alert('Erreur envoi. Réessayez ou contactez-nous.');
+      console.error(err);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -162,48 +157,45 @@ export default function OrderForm() {
       <div className={styles.blob2} />
 
       <div className={styles.inner}>
-        <div className={styles.titleBlock}>
-{/*           <span className={styles.eyebrow}>— Commander maintenant —</span> */}
-{/*           <h2 className={styles.title}>Passer une <em>commande</em></h2> */}
-        </div>
+        <div className={styles.titleBlock} />
 
         <div className={styles.layout}>
+
           {/* LEFT — Product showcase */}
-          <aside className={styles.productCard}>
+      <aside className={styles.productCard}>
 
-            <div className={styles.imgHalo} />
+                 <div className={styles.imgHalo} />
 
 
-            <div className={styles.prodMeta}>
-              <p className={styles.prodName}>MBWAAY Power Clean</p>
-              <p className={styles.prodSub}>Super Dégraissant Multi‑Usage</p>
-            </div>
+                 <div className={styles.prodMeta}>
+                   <p className={styles.prodName}>MBWAAY Power Clean</p>
+                   <p className={styles.prodSub}>Super Dégraissant Multi‑Usage</p>
+                 </div>
 
-            <div className={styles.priceBlock}>
-              <div className={styles.oldRow}>
-                <s className={styles.oldPrice}>{originalPrice} TND</s>
-                <span className={styles.pill}>−12%</span>
-              </div>
-              <div className={styles.newPrice}>
-                {salePrice}<span className={styles.cur}> TND</span>
-                <span className={styles.per}>/unité</span>
-              </div>
-{/*               <div className={styles.savingsBadge}> */}
-{/*                 <IcoGift /> */}
-{/*                 <span> {originalPrice - salePrice}  </span> */}
-{/*               </div> */}
-            </div>
+                 <div className={styles.priceBlock}>
+                   <div className={styles.oldRow}>
+                     <s className={styles.oldPrice}>{originalPrice} TND</s>
+                     <span className={styles.pill}>−12%</span>
+                   </div>
+                   <div className={styles.newPrice}>
+                     {salePrice}<span className={styles.cur}> TND</span>
+                     <span className={styles.per}>/unité</span>
+                   </div>
+     {/*               <div className={styles.savingsBadge}> */}
+     {/*                 <IcoGift /> */}
+     {/*                 <span> {originalPrice - salePrice}  </span> */}
+     {/*               </div> */}
+                 </div>
 
-            <ul className={styles.trustList}>
-              {TRUST_ITEMS.map(({ icon, label }) => (
-                <li key={label}>
-                  <span className={styles.trustIcon}>{icon}</span>
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </aside>
-
+                 <ul className={styles.trustList}>
+                   {TRUST_ITEMS.map(({ icon, label }) => (
+                     <li key={label}>
+                       <span className={styles.trustIcon}>{icon}</span>
+                       {label}
+                     </li>
+                   ))}
+                 </ul>
+               </aside>
           {/* RIGHT — Form */}
           <div className={styles.formCard}>
             <div className={styles.formHeader}>
@@ -236,12 +228,12 @@ export default function OrderForm() {
             </Field>
 
             <div className={styles.grid2}>
-                <Field label="Produit">
-                  <select value={form.product} onChange={e => set('product', e.target.value)}>
-                    <option value="1L">1L</option>
-                    <option value="5L">5L</option>
-                  </select>
-                </Field>
+              <Field label="Produit">
+                <select value={form.product} onChange={e => set('product', e.target.value)}>
+                  <option value="1L">1L</option>
+                  <option value="5L">5L</option>
+                </select>
+              </Field>
               <Field label="Quantité">
                 <div className={styles.qtyRow}>
                   <button className={styles.qtyBtn} onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer">−</button>
@@ -256,7 +248,7 @@ export default function OrderForm() {
                 placeholder="Instructions spéciales, heure de livraison…" rows={3} />
             </Field>
 
-            {/* Summary strip */}
+            {/* Summary */}
             <div className={styles.summary}>
               <div className={styles.summaryLeft}>
                 <span className={styles.summaryLabel}>Total commande</span>
@@ -265,16 +257,16 @@ export default function OrderForm() {
               <span className={styles.summaryTotal}>{total} TND</span>
             </div>
 
-            <button className={styles.btnBuy} onClick={handleSubmit}>
+            <button className={styles.btnBuy} onClick={handleSubmit} disabled={sending}>
               <span className={styles.btnIcon}><IcoCart /></span>
-              <span>ACHETER MAINTENANT</span>
-              <span className={styles.btnArrow}><IcoArrow /></span>
+              <span>{sending ? 'Envoi en cours…' : 'ACHETER MAINTENANT'}</span>
+              {!sending && <span className={styles.btnArrow}><IcoArrow /></span>}
             </button>
 
             {success && (
               <div className={styles.successMsg}>
                 <IcoCheck />
-                <span>Commande enregistrée ! Le fichier Excel a été téléchargé.</span>
+                <span>Commande envoyée ! Vous recevrez une confirmation bientôt.</span>
               </div>
             )}
 
