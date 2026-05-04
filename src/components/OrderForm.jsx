@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import styles from './OrderForm.module.css';
 import emailjs from '@emailjs/browser';
 
-// ── CONFIG EMAILJS — remplacez ces 3 valeurs ──────────────
 const EJS_SERVICE  = 'service_bwd9ism';
 const EJS_TEMPLATE = 'template_zc7bwex';
 const EJS_KEY      = 'uzIU9Cu-APsEGhXVf';
-// ──────────────────────────────────────────────────────────
+
+// ← Collez ici l'URL de votre Apps Script après déploiement
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzWyOyX6j-c7uKwHG9e78eo7qqWC4GYC6UZLp3D5ehqFElMuxpmvU3nu1tMoxsYPQ6l/exec';
 
 const INITIAL = {
   fname: '', lname: '', phone: '', address: '', wilaya: '',
@@ -20,55 +21,40 @@ const WILAYAS = [
   'Gabès', 'Medenine', 'Tataouine', 'Gafsa', 'Tozeur', 'Kébili',
 ];
 
-/* ── SVG Icons ──────────────────────────────── */
 const IcoTruck = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="1" y="3" width="15" height="13" rx="1"/>
-    <path d="M16 8h4l3 3v5h-7V8z"/>
-    <circle cx="5.5" cy="18.5" r="2.5"/>
-    <circle cx="18.5" cy="18.5" r="2.5"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/>
+    <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
   </svg>
 );
 const IcoCard = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="1" y="4" width="22" height="16" rx="2"/>
-    <line x1="1" y1="10" x2="23" y2="10"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
   </svg>
 );
 const IcoCart = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="9" cy="21" r="1"/>
-    <circle cx="20" cy="21" r="1"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
   </svg>
 );
 const IcoArrow = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <line x1="5" y1="12" x2="19" y2="12"/>
-    <polyline points="12 5 19 12 12 19"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
   </svg>
 );
 const IcoCheck = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-    <polyline points="22 4 12 14.01 9 11.01"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
   </svg>
 );
 const IcoLock = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="3" y="11" width="18" height="11" rx="2"/>
-    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
 );
 const IcoStar = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 );
@@ -78,14 +64,12 @@ const TRUST_ITEMS = [
   { icon: <IcoStar />,  label: 'Qualité garantie' },
   { icon: <IcoCard />,  label: 'Paiement à la livraison' },
 ];
-
 const FOOTER_TRUST = [
-  { icon: <IcoCard />,   label: 'Paiement à la livraison' },
-  { icon: <IcoLock />,   label: '100% sécurisé' },
-  { icon: <IcoTruck />,  label: 'Livraison gratuite' },
+  { icon: <IcoCard />,  label: 'Paiement à la livraison' },
+  { icon: <IcoLock />,  label: '100% sécurisé' },
+  { icon: <IcoTruck />, label: 'Livraison gratuite' },
 ];
 
-/* ── Component ──────────────────────────────── */
 export default function OrderForm() {
   const [form, setForm]       = useState(INITIAL);
   const [qty, setQty]         = useState(1);
@@ -116,11 +100,10 @@ export default function OrderForm() {
   async function handleSubmit() {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
-
     setSending(true);
 
     const now = new Date();
-    const templateParams = {
+    const data = {
       fname:   form.fname,
       lname:   form.lname,
       phone:   form.phone,
@@ -136,7 +119,17 @@ export default function OrderForm() {
     };
 
     try {
-      await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, templateParams, EJS_KEY);
+      // 1. Envoyer email via EmailJS
+      await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, data, EJS_KEY);
+
+      // 2. Sauvegarder dans Google Sheets
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
       setSuccess(true);
       setForm(INITIAL);
       setQty(1);
@@ -151,52 +144,40 @@ export default function OrderForm() {
 
   return (
     <section className={styles.section} id="order">
-
       <div className={styles.noise} />
       <div className={styles.blob1} />
       <div className={styles.blob2} />
 
       <div className={styles.inner}>
         <div className={styles.titleBlock} />
-
         <div className={styles.layout}>
 
-          {/* LEFT — Product showcase */}
-      <aside className={styles.productCard}>
+          <aside className={styles.productCard}>
+            <div className={styles.imgHalo} />
+            <div className={styles.prodMeta}>
+              <p className={styles.prodName}>MBWAAY Power Clean</p>
+              <p className={styles.prodSub}>Super Dégraissant Multi‑Usage</p>
+            </div>
+            <div className={styles.priceBlock}>
+              <div className={styles.oldRow}>
+                <s className={styles.oldPrice}>{originalPrice} TND</s>
+                <span className={styles.pill}>−12%</span>
+              </div>
+              <div className={styles.newPrice}>
+                {salePrice}<span className={styles.cur}> TND</span>
+                <span className={styles.per}>/unité</span>
+              </div>
+            </div>
+            <ul className={styles.trustList}>
+              {TRUST_ITEMS.map(({ icon, label }) => (
+                <li key={label}>
+                  <span className={styles.trustIcon}>{icon}</span>
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </aside>
 
-                 <div className={styles.imgHalo} />
-
-
-                 <div className={styles.prodMeta}>
-                   <p className={styles.prodName}>MBWAAY Power Clean</p>
-                   <p className={styles.prodSub}>Super Dégraissant Multi‑Usage</p>
-                 </div>
-
-                 <div className={styles.priceBlock}>
-                   <div className={styles.oldRow}>
-                     <s className={styles.oldPrice}>{originalPrice} TND</s>
-                     <span className={styles.pill}>−12%</span>
-                   </div>
-                   <div className={styles.newPrice}>
-                     {salePrice}<span className={styles.cur}> TND</span>
-                     <span className={styles.per}>/unité</span>
-                   </div>
-     {/*               <div className={styles.savingsBadge}> */}
-     {/*                 <IcoGift /> */}
-     {/*                 <span> {originalPrice - salePrice}  </span> */}
-     {/*               </div> */}
-                 </div>
-
-                 <ul className={styles.trustList}>
-                   {TRUST_ITEMS.map(({ icon, label }) => (
-                     <li key={label}>
-                       <span className={styles.trustIcon}>{icon}</span>
-                       {label}
-                     </li>
-                   ))}
-                 </ul>
-               </aside>
-          {/* RIGHT — Form */}
           <div className={styles.formCard}>
             <div className={styles.formHeader}>
               <h3>Vos informations</h3>
@@ -248,7 +229,6 @@ export default function OrderForm() {
                 placeholder="Instructions spéciales, heure de livraison…" rows={3} />
             </Field>
 
-            {/* Summary */}
             <div className={styles.summary}>
               <div className={styles.summaryLeft}>
                 <span className={styles.summaryLabel}>Total commande</span>
