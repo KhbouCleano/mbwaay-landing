@@ -75,7 +75,7 @@ export default function Hero() {
                <video
                  ref={videoRef}
                  className={styles.cardVideoEl}
-                 src="/video.mp4"
+                 src="https://res.cloudinary.com/dgrepqv2c/video/upload/v1777918012/video_2_lnjpmo.mp4"
                  autoPlay muted={videoMuted} playsInline loop
                />
                <div className={styles.cardVideoControls}>
