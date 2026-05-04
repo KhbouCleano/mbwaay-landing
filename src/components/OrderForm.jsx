@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 
 // ── CONFIG EMAILJS — remplacez ces 3 valeurs ──────────────
 const EJS_SERVICE  = 'service_bwd9ism';
-const EJS_TEMPLATE = 'template_9ec15u5';
+const EJS_TEMPLATE = 'template_zc7bwex';
 const EJS_KEY      = 'uzIU9Cu-APsEGhXVf';
 // ──────────────────────────────────────────────────────────
 
