@@ -184,37 +184,20 @@ export default function OrderForm() {
               <p>Remplissez le formulaire pour finaliser votre achat</p>
             </div>
 
-            <div className={styles.grid2}>
-              <Field label="Prénom" required error={errors.fname}>
-                <input value={form.fname} onChange={e => set('fname', e.target.value)} placeholder="Ahmed" />
-              </Field>
-              <Field label="Nom" required error={errors.lname}>
-                <input value={form.lname} onChange={e => set('lname', e.target.value)} placeholder="Ben Ali" />
-              </Field>
-            </div>
+    <Field label="Nom et prénom" required error={errors.name}>
+      <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ahmed Ben Ali" />
+    </Field>
 
-            <Field label="Téléphone" required error={errors.phone}>
-              <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+216 XX XXX XXX" type="tel" />
-            </Field>
+    <Field label="Numéro de téléphone" required error={errors.phone}>
+      <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+216 XX XXX XXX" type="tel" />
+    </Field>
 
-            <Field label="Wilaya" required error={errors.wilaya}>
-              <select value={form.wilaya} onChange={e => set('wilaya', e.target.value)}>
-                <option value="">Sélectionner votre wilaya</option>
-                {WILAYAS.map(w => <option key={w} value={w}>{w}</option>)}
-              </select>
-            </Field>
-
-            <Field label="Adresse complète" required error={errors.address}>
-              <input value={form.address} onChange={e => set('address', e.target.value)} placeholder="Rue, cité, quartier…" />
-            </Field>
+    <Field label="Adresse complète" required error={errors.address}>
+      <input value={form.address} onChange={e => set('address', e.target.value)} placeholder="Rue, cité, quartier, wilaya…" />
+    </Field>
 
             <div className={styles.grid2}>
-              <Field label="Produit">
-                <select value={form.product} onChange={e => set('product', e.target.value)}>
-                  <option value="1L">1L</option>
-                  <option value="5L">5L</option>
-                </select>
-              </Field>
+
               <Field label="Quantité">
                 <div className={styles.qtyRow}>
                   <button className={styles.qtyBtn} onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer">−</button>
@@ -224,10 +207,6 @@ export default function OrderForm() {
               </Field>
             </div>
 
-            <Field label="Notes (optionnel)">
-              <textarea value={form.notes} onChange={e => set('notes', e.target.value)}
-                placeholder="Instructions spéciales, heure de livraison…" rows={3} />
-            </Field>
 
             <div className={styles.summary}>
               <div className={styles.summaryLeft}>
