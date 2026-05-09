@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './OrderForm.module.css';
 import emailjs from '@emailjs/browser';
+import { useLang } from '../i18n/useTranslation.jsx';
 
 const EJS_SERVICE  = 'service_bwd9ism';
 const EJS_TEMPLATE = 'template_zc7bwex';
@@ -70,17 +71,24 @@ const FOOTER_TRUST = [
   { icon: <IcoTruck />, label: 'Livraison gratuite' },
 ];
 
-export default function OrderForm() {
+export default function OrderForm({ selectedProduct }) {
+  const { t } = useLang();   // ← AJOUTER CETTE LIGNE
+
   const [form, setForm]       = useState(INITIAL);
   const [qty, setQty]         = useState(1);
   const [success, setSuccess] = useState(false);
   const [sending, setSending] = useState(false);
   const [errors, setErrors]   = useState({});
 
-  const originalPrice = 17;
-  const salePrice     = 15;
-  const total         = qty * salePrice;
-  const savings       = (originalPrice - salePrice) * qty;
+  const prodName  = selectedProduct?.name  || 'MBWAAY Power Clean';
+  const prodSub   = selectedProduct?.sub   || 'Super Dégraissant Multi‑Usage';
+  const prodColor = selectedProduct?.color || '#3ecf6e';
+
+const originalPrice = 21;   // ← était 17, maintenant 21
+const salePrice     = 17;   // ← était 15, maintenant 17
+const livraison     = 5;    // ← nouveau
+const total         = qty * salePrice + livraison;
+const savings       = (originalPrice - salePrice) * qty;
 
   function set(field, value) {
     setForm(f => ({ ...f, [field]: value }));
@@ -153,20 +161,29 @@ export default function OrderForm() {
         <div className={styles.layout}>
 
           <aside className={styles.productCard}>
-            <div className={styles.imgHalo} />
-            <div className={styles.prodMeta}>
-              <p className={styles.prodName}>MBWAAY Power Clean</p>
-              <p className={styles.prodSub}>Super Dégraissant Multi‑Usage</p>
-            </div>
+
             <div className={styles.priceBlock}>
               <div className={styles.oldRow}>
                 <s className={styles.oldPrice}>{originalPrice} TND</s>
-                <span className={styles.pill}>−12%</span>
+                <span className={styles.pill}>−19%</span>
               </div>
               <div className={styles.newPrice}>
                 {salePrice}<span className={styles.cur}> TND</span>
                 <span className={styles.per}>/unité</span>
               </div>
+
+              {/* ← Livraison */}
+      <div className={styles.livraisonRow}>
+        <span className={styles.livraisonLabel}>🚚 {t.form.livraison}</span>
+        <span className={styles.livraisonPrice}>{livraison} TND</span>
+      </div>
+
+              {/* ← Total avec livraison */}
+
+      <div className={styles.totalRow}>
+        <span className={styles.totalLabel}>{t.form.total} ({qty} {qty > 1 ? t.form.unites : t.form.unite})</span>
+        <span className={styles.totalPrice}>{total} TND</span>
+      </div>
             </div>
             <ul className={styles.trustList}>
               {TRUST_ITEMS.map(({ icon, label }) => (
@@ -179,26 +196,26 @@ export default function OrderForm() {
           </aside>
 
           <div className={styles.formCard}>
-            <div className={styles.formHeader}>
-              <h3>Vos informations</h3>
-              <p>Remplissez le formulaire pour finaliser votre achat</p>
-            </div>
+      <div className={styles.formHeader}>
+        <h3>{t.form.title}</h3>
+        <p>{t.form.subtitle}</p>
+      </div>
 
-    <Field label="Nom et prénom" required error={errors.name}>
-      <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ahmed Ben Ali" />
-    </Field>
+      <Field label={t.form.name} required error={errors.name}>
+        <input value={form.name} onChange={e => set('name', e.target.value)} placeholder={t.form.namePh} />
+      </Field>
 
-    <Field label="Numéro de téléphone" required error={errors.phone}>
-      <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+216 XX XXX XXX" type="tel" />
-    </Field>
+      <Field label={t.form.phone} required error={errors.phone}>
+        <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder={t.form.phonePh} type="tel" />
+      </Field>
 
-    <Field label="Adresse complète" required error={errors.address}>
-      <input value={form.address} onChange={e => set('address', e.target.value)} placeholder="Rue, cité, quartier, wilaya…" />
-    </Field>
+      <Field label={t.form.address} required error={errors.address}>
+        <input value={form.address} onChange={e => set('address', e.target.value)} placeholder={t.form.addressPh} />
+      </Field>
 
             <div className={styles.grid2}>
 
-              <Field label="Quantité">
+      <Field label={t.form.qty}>
                 <div className={styles.qtyRow}>
                   <button className={styles.qtyBtn} onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer">−</button>
                   <span className={styles.qtyVal}>{qty}</span>
@@ -216,17 +233,17 @@ export default function OrderForm() {
               <span className={styles.summaryTotal}>{total} TND</span>
             </div>
 
-            <button className={styles.btnBuy} onClick={handleSubmit} disabled={sending}>
-              <span className={styles.btnIcon}><IcoCart /></span>
-              <span>{sending ? 'Envoi en cours…' : 'ACHETER MAINTENANT'}</span>
-              {!sending && <span className={styles.btnArrow}><IcoArrow /></span>}
-            </button>
+      <button className={styles.btnBuy} onClick={handleSubmit} disabled={sending}>
+        <span className={styles.btnIcon}><IcoCart /></span>
+        <span>{sending ? t.form.sending : t.form.btn}</span>
+        {!sending && <span className={styles.btnArrow}><IcoArrow /></span>}
+      </button>
 
             {success && (
-              <div className={styles.successMsg}>
-                <IcoCheck />
-                <span>Commande envoyée ! Vous recevrez une confirmation bientôt.</span>
-              </div>
+        <div className={styles.successMsg}>
+          <IcoCheck />
+          <span>{t.form.success}</span>
+        </div>
             )}
 
             <div className={styles.trust}>

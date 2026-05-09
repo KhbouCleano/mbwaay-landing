@@ -1,0 +1,53 @@
+{
+  "banner": [
+    "Livraison rapide partout en Tunisie",
+    "Paiement à la livraison",
+    "Qualité garantie",
+    "Super Dégraissant MBWAAY"
+  ],
+  "hero": {
+    "line1": "POWER",
+    "line2": "CLEAN",
+    "trust1": "4.9/5 clients",
+    "trust2": "Livraison rapide",
+    "trust3": "Paiement sécurisé"
+  },
+  "form": {
+    "title": "Vos informations",
+    "subtitle": "Remplissez le formulaire pour finaliser votre achat",
+    "name": "Nom et prénom",
+    "phone": "Numéro de téléphone",
+    "address": "Adresse complète",
+    "namePh": "Ahmed Ben Ali",
+    "phonePh": "+216 XX XXX XXX",
+    "addressPh": "Rue, cité, quartier, wilaya…",
+    "qty": "Quantité",
+    "total": "Total commande",
+    "livraison": "Livraison",
+    "btn": "ACHETER MAINTENANT",
+    "sending": "Envoi en cours…",
+    "success": "Commande envoyée ! Vous recevrez une confirmation bientôt.",
+    "error": "Erreur envoi. Réessayez ou contactez-nous.",
+    "required": "Requis",
+    "unite": "unité",
+    "unites": "unités",
+    "prixUnite": "/unité",
+    "economie": "Économie"
+  },
+  "surfaces": {
+    "eyebrow": "— Notre gamme complète —",
+    "title": "Produits",
+    "titleEm": "similaires",
+    "subtitle": "Découvrez toute la gamme MBWAAY Perfect Clean",
+    "btn": "🛒 Commander ce produit"
+  },
+  "trust": {
+    "livraison": "Livraison rapide",
+    "qualite": "Qualité garantie",
+    "paiement": "Paiement à la livraison",
+    "secure": "100% sécurisé",
+    "gratuit": "Livraison gratuite"
+  },
+  "dir": "ltr",
+  "lang": "fr"
+}

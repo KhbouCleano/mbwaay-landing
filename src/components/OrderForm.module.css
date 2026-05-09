@@ -130,7 +130,7 @@
   background: linear-gradient(145deg, rgba(20,24,30,0.92), rgba(5, 7, 10, 0.4));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 36px 28px;
+  padding: 16px 18px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -185,7 +185,7 @@
   margin: 0; letter-spacing: 0.04em;
 }
 
-.priceBlock { margin-bottom: 26px; }
+.priceBlock { margin-bottom: 2px; }
 .oldRow {
   display: flex; align-items: center;
   justify-content: center; gap: 10px; margin-bottom: 8px;
@@ -553,3 +553,31 @@
   }
   .trustItem { font-size: 0.78rem; }
 }
+.livraisonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: rgba(240,242,245,0.70);
+}
+.livraisonLabel { font-weight: 600; }
+.livraisonPrice { font-weight: 700; color: #fff; }
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: rgba(62,207,110,0.12);
+  border: 1px solid rgba(62,207,110,0.30);
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+.totalLabel { font-weight: 700; color: rgba(240,242,245,0.80); }
+.totalPrice  { font-weight: 900; font-size: 1.1rem; color: #3ecf6e; }

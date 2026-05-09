@@ -24,3 +24,29 @@
   vertical-align: middle;
   margin-right: 6px;
 }
+.banner {
+  position: relative;  /* ← pour positionner le bouton */
+}
+
+.langBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: .06em;
+  transition: background .2s, transform .2s;
+  white-space: nowrap;
+}
+.langBtn:hover {
+  background: rgba(255,255,255,0.28);
+  transform: translateY(-50%) scale(1.05);
+}

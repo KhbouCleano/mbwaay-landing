@@ -2,14 +2,45 @@ import React, { useState, useRef } from 'react';
 import { FaStar, FaTruck, FaShieldAlt, FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import styles from './Hero.module.css';
 import OrderForm from './OrderForm';
+import { useLang } from '../i18n/useTranslation.jsx';
 
-const BADGES = ['✓ Sans rinçage', '✓ Multi-surfaces', '⚡ Action immédiate', '✓ Formule Pro'];
+/* Produit par défaut (Power Clean) */
+const DEFAULT_PRODUCT = {
+  name: 'MBWAAY Power Clean',
+  sub: 'Super Dégraissant Multi-Usage',
+  label: 'POWER CLEAN',
+  line1: 'POWER',
+  line2: 'CLEAN',
+  color: '#ed1313',
+  colorGreen: '#2a8a12',
+  gradient: 'linear-gradient(160deg, #f0faf0 0%, #fff5f5 100%)',
+  image: '/img.png',
+  badge: '-24%',
+  price: 15,
+  oldPrice: 17,
+};
 
-export default function Hero() {
+export default function Hero({ selectedProduct }) {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoMuted,   setVideoMuted]   = useState(true);
   const [showVideo,    setShowVideo]    = useState(false);
   const videoRef = useRef(null);
+
+  /* Fusionner produit sélectionné avec défaut */
+  const prod = selectedProduct ? {
+    ...DEFAULT_PRODUCT,
+    name:     selectedProduct.name,
+    sub:      selectedProduct.sub,
+    label:    selectedProduct.label,
+    line1:    selectedProduct.label.split(' ')[0],
+    line2:    selectedProduct.label.split(' ').slice(1).join(' ') || selectedProduct.label,
+    color:    selectedProduct.color,
+    gradient: selectedProduct.gradient,
+    image:    selectedProduct.image,
+    badge:    selectedProduct.badge,
+    price:    selectedProduct.price,
+    oldPrice: selectedProduct.oldPrice,
+  } : DEFAULT_PRODUCT;
 
   function togglePlay() {
     if (!videoRef.current) return;
@@ -42,76 +73,70 @@ export default function Hero() {
         <img src="/logo MBwaay.png" alt="MBWAAY Perfect Clean" className={styles.logoCornerImg} />
       </a>
 
-      {/* ── MAIN GRID ───────────────────────── */}
       <div className={styles.inner}>
 
-        {/* ① TITRE — premier enfant direct de .inner */}
+        {/* ② CARTE PRODUIT */}
+        <div className={styles.imgSide}>
+          <div className={styles.productCard}>
 
+            <div className={styles.cardBadgeRow}>
+              <span className={styles.badgeDiscount} style={{ background: prod.color }}>
+                {prod.badge}
+              </span>
+              <span className={styles.badgeTopVente}>⭐ TOP VENTE</span>
+            </div>
 
-     {/* ② CARTE PRODUIT + TITRE AU-DESSUS */}
-     <div className={styles.imgSide}>
-       <div className={styles.productCard}>
-         <div className={styles.cardBadgeRow}>
-           <span className={styles.badgeDiscount}>-24%</span>
-           <span className={styles.badgeTopVente}>⭐ TOP VENTE</span>
-         </div>
-         <div className={styles.cardImgWrap}>
+            <div className={styles.cardImgWrap} style={{ background: prod.gradient }}>
 
-           {/* TITRE DANS LA CARTE */}
-           <div className={styles.titleWrapper}>
-             <h1 className={styles.h1}>
-               <span className={styles.line1}>POWER</span>
-               <span className={styles.line2}>CLEAN</span>
-             </h1>
-           </div>
+              {/* TITRE DANS LA CARTE */}
+              <div className={styles.titleWrapper}>
+                <h1 className={styles.h1}>
+                  <span className={styles.line1} style={{ color: prod.colorGreen || prod.color }}>
+                    {prod.line1}
+                  </span>
+                  <span className={styles.line2} style={{ color: prod.color }}>
+                    {prod.line2}
+                  </span>
+                </h1>
+              </div>
 
-           <img src="/img.png" alt="MBWAAY Power Clean 1L" className={styles.cardProductImg} />
-           <div className={styles.cardVideoBtn} onClick={() => setShowVideo(v => !v)}>
-             {showVideo ? <FaPause /> : <FaPlay />}
-             <span>{showVideo ? 'Pause' : 'Voir démo'}</span>
-           </div>
-           {showVideo && (
-             <div className={styles.cardVideoOverlay}>
-               <video
-                 ref={videoRef}
-                 className={styles.cardVideoEl}
-                 src="https://res.cloudinary.com/dgrepqv2c/video/upload/v1777918012/video_2_lnjpmo.mp4"
-                 autoPlay muted={videoMuted} playsInline loop
-               />
-               <div className={styles.cardVideoControls}>
-                 <button className={styles.vcBtn} onClick={togglePlay}>
-                   {videoPlaying ? <FaPause /> : <FaPlay />}
-                 </button>
-                 <span className={styles.vcLabel}>Démo MBWAAY</span>
-                 <button className={styles.vcBtn} onClick={toggleMute}>
-                   {videoMuted ? <FaVolumeMute /> : <FaVolumeUp />}
-                 </button>
-               </div>
-             </div>
-           )}
-         </div>
-       </div>
-     </div>
-        {/* ③ FORMULAIRE + CONTENU */}
-        <div className={styles.textSide}>
+              <img
+                src={typeof prod.image === 'string' ? prod.image : prod.image}
+                alt={prod.name}
+                className={styles.cardProductImg}
+              />
 
-          <OrderForm />
+              <div className={styles.cardVideoBtn} onClick={() => setShowVideo(v => !v)}>
+                {showVideo ? <FaPause /> : <FaPlay />}
+                <span>{showVideo ? 'Pause' : 'Voir démo'}</span>
+              </div>
 
-          <p className={styles.sub}>
-            La formule professionnelle qui élimine graisse, taches et bactéries
-            sur <strong>toutes les surfaces</strong> — en un seul spray.
-          </p>
-
-          <div className={styles.pills}>
-            {BADGES.map(b => (
-              <span key={b} className={styles.pill}>{b}</span>
-            ))}
+              {showVideo && (
+                <div className={styles.cardVideoOverlay}>
+                  <video
+                    ref={videoRef}
+                    className={styles.cardVideoEl}
+                    src="https://res.cloudinary.com/dgrepqv2c/video/upload/v1777918012/video_2_lnjpmo.mp4"
+                    autoPlay muted={videoMuted} playsInline loop
+                  />
+                  <div className={styles.cardVideoControls}>
+                    <button className={styles.vcBtn} onClick={togglePlay}>
+                      {videoPlaying ? <FaPause /> : <FaPlay />}
+                    </button>
+                    <span className={styles.vcLabel}>Démo MBWAAY</span>
+                    <button className={styles.vcBtn} onClick={toggleMute}>
+                      {videoMuted ? <FaVolumeMute /> : <FaVolumeUp />}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+        </div>
 
-{/*           <div className={styles.actions}> */}
-{/*             <a href="#order"    className={styles.btnPrimary}>🛒 Commander maintenant</a> */}
-{/*             <a href="#features" className={styles.btnSecondary}>Découvrir →</a> */}
-{/*           </div> */}
+        {/* ③ FORMULAIRE */}
+        <div className={styles.textSide}>
+          <OrderForm selectedProduct={prod} />
 
           <div className={styles.trust}>
             <div className={styles.trustItem}>
