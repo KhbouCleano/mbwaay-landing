@@ -1,10 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaStar, FaTruck, FaShieldAlt, FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import styles from './Hero.module.css';
 import OrderForm from './OrderForm';
 import { useLang } from '../i18n/useTranslation.jsx';
 
-/* Produit par défaut (Power Clean) */
 const DEFAULT_PRODUCT = {
   name: 'MBWAAY Power Clean',
   sub: 'Super Dégraissant Multi-Usage',
@@ -18,6 +17,7 @@ const DEFAULT_PRODUCT = {
   badge: '-24%',
   price: 15,
   oldPrice: 17,
+  video: null,
 };
 
 export default function Hero({ selectedProduct }) {
@@ -26,7 +26,11 @@ export default function Hero({ selectedProduct }) {
   const [showVideo,    setShowVideo]    = useState(false);
   const videoRef = useRef(null);
 
-  /* Fusionner produit sélectionné avec défaut */
+  useEffect(() => {
+    setShowVideo(false);
+    setVideoPlaying(false);
+  }, [selectedProduct]);
+
   const prod = selectedProduct ? {
     ...DEFAULT_PRODUCT,
     name:     selectedProduct.name,
@@ -40,6 +44,7 @@ export default function Hero({ selectedProduct }) {
     badge:    selectedProduct.badge,
     price:    selectedProduct.price,
     oldPrice: selectedProduct.oldPrice,
+    video:    selectedProduct.video ?? null,
   } : DEFAULT_PRODUCT;
 
   function togglePlay() {
@@ -47,6 +52,7 @@ export default function Hero({ selectedProduct }) {
     if (videoPlaying) { videoRef.current.pause(); setVideoPlaying(false); }
     else              { videoRef.current.play();  setVideoPlaying(true);  }
   }
+
   function toggleMute() {
     if (!videoRef.current) return;
     videoRef.current.muted = !videoMuted;
@@ -75,7 +81,6 @@ export default function Hero({ selectedProduct }) {
 
       <div className={styles.inner}>
 
-        {/* ② CARTE PRODUIT */}
         <div className={styles.imgSide}>
           <div className={styles.productCard}>
 
@@ -88,7 +93,6 @@ export default function Hero({ selectedProduct }) {
 
             <div className={styles.cardImgWrap} style={{ background: prod.gradient }}>
 
-              {/* TITRE DANS LA CARTE */}
               <div className={styles.titleWrapper}>
                 <h1 className={styles.h1}>
                   <span className={styles.line1} style={{ color: prod.colorGreen || prod.color }}>
@@ -101,14 +105,14 @@ export default function Hero({ selectedProduct }) {
               </div>
 
               <img
-                src={typeof prod.image === 'string' ? prod.image : prod.image}
+                src={prod.image}
                 alt={prod.name}
                 className={styles.cardProductImg}
               />
 
               <div className={styles.cardVideoBtn} onClick={() => setShowVideo(v => !v)}>
                 {showVideo ? <FaPause /> : <FaPlay />}
-                <span>{showVideo ? 'Pause' : 'Voir démo'}</span>
+                <span>{showVideo ? 'Fermer' : 'Voir démo'}</span>
               </div>
 
               {showVideo && (
@@ -116,8 +120,11 @@ export default function Hero({ selectedProduct }) {
                   <video
                     ref={videoRef}
                     className={styles.cardVideoEl}
-                    src="https://res.cloudinary.com/dgrepqv2c/video/upload/v1777918012/video_2_lnjpmo.mp4"
-                    autoPlay muted={videoMuted} playsInline loop
+                    src={prod.video ?? 'https://res.cloudinary.com/dgrepqv2c/video/upload/v1777918012/video_2_lnjpmo.mp4'}
+                    autoPlay
+                    muted={videoMuted}
+                    playsInline
+                    loop
                   />
                   <div className={styles.cardVideoControls}>
                     <button className={styles.vcBtn} onClick={togglePlay}>
@@ -134,7 +141,6 @@ export default function Hero({ selectedProduct }) {
           </div>
         </div>
 
-        {/* ③ FORMULAIRE */}
         <div className={styles.textSide}>
           <OrderForm selectedProduct={prod} />
 

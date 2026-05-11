@@ -27,6 +27,8 @@ export const PRODUCTS = [
     color: '#c0a020',
     gradient: 'linear-gradient(160deg, #fffbe6 0%, #fff8cc 100%)',
     image: img1,
+      video: 'https://res.cloudinary.com/dgrepqv2c/video/upload/v1778505412/sanitaire_kccami.mp4',
+
   },
   {
     id: 2,
@@ -63,6 +65,8 @@ export const PRODUCTS = [
     color: '#1d71b9',
     gradient: 'linear-gradient(160deg, #e8f4ff 0%, #f0f8ff 100%)',
     image: img4,
+      video: 'https://res.cloudinary.com/dgrepqv2c/video/upload/v1778505412/sanitaire_kccami.mp4',
+
   },
   {
     id: 4,
@@ -117,6 +121,8 @@ export const PRODUCTS = [
     color: '#e87820',
     gradient: 'linear-gradient(160deg, #fff3e0 0%, #fff8f0 100%)',
     image: img11,
+      video: 'https://res.cloudinary.com/dgrepqv2c/video/upload/v1778505323/Kit_yphy5c.mp4',
+
   },
 ];
 
