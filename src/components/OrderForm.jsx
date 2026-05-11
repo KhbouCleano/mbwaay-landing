@@ -7,12 +7,10 @@ const EJS_SERVICE  = 'service_bwd9ism';
 const EJS_TEMPLATE = 'template_zc7bwex';
 const EJS_KEY      = 'uzIU9Cu-APsEGhXVf';
 
-// ← Collez ici l'URL de votre Apps Script après déploiement
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzWyOyX6j-c7uKwHG9e78eo7qqWC4GYC6UZLp3D5ehqFElMuxpmvU3nu1tMoxsYPQ6l/exec';
 
 const INITIAL = {
-  fname: '', lname: '', phone: '', address: '', wilaya: '',
-  product: '1L', notes: '',
+  name: '', phone: '', address: '', wilaya: '', notes: '',
 };
 
 const WILAYAS = [
@@ -72,7 +70,7 @@ const FOOTER_TRUST = [
 ];
 
 export default function OrderForm({ selectedProduct }) {
-  const { t } = useLang();   // ← AJOUTER CETTE LIGNE
+  const { t } = useLang();
 
   const [form, setForm]       = useState(INITIAL);
   const [qty, setQty]         = useState(1);
@@ -84,11 +82,11 @@ export default function OrderForm({ selectedProduct }) {
   const prodSub   = selectedProduct?.sub   || 'Super Dégraissant Multi‑Usage';
   const prodColor = selectedProduct?.color || '#3ecf6e';
 
-const originalPrice = 21;   // ← était 17, maintenant 21
-const salePrice     = 17;   // ← était 15, maintenant 17
-const livraison     = 5;    // ← nouveau
-const total         = qty * salePrice + livraison;
-const savings       = (originalPrice - salePrice) * qty;
+  const originalPrice = 21;
+  const salePrice     = 17;
+  const livraison     = 5;
+  const total         = qty * salePrice + livraison;
+  const savings       = (originalPrice - salePrice) * qty;
 
   function set(field, value) {
     setForm(f => ({ ...f, [field]: value }));
@@ -97,8 +95,7 @@ const savings       = (originalPrice - salePrice) * qty;
 
   function validate() {
     const e = {};
-    if (!form.fname.trim())   e.fname   = 'Requis';
-    if (!form.lname.trim())   e.lname   = 'Requis';
+    if (!form.name.trim())    e.name    = 'Requis';
     if (!form.phone.trim())   e.phone   = 'Requis';
     if (!form.address.trim()) e.address = 'Requis';
     if (!form.wilaya)         e.wilaya  = 'Requis';
@@ -112,25 +109,24 @@ const savings       = (originalPrice - salePrice) * qty;
 
     const now = new Date();
     const data = {
-      fname:   form.fname,
-      lname:   form.lname,
-      phone:   form.phone,
-      wilaya:  form.wilaya,
-      address: form.address,
-      product: form.product,
-      qty:     qty,
-      total:   `${total} TND`,
-      savings: `${savings} TND`,
-      notes:   form.notes || '—',
-      date:    now.toLocaleDateString('fr-FR'),
-      heure:   now.toLocaleTimeString('fr-FR'),
+      nom:      form.name,
+      telephone: form.phone,
+      wilaya:   form.wilaya,
+      adresse:  form.address,
+      produit:  prodName,
+      quantite: qty,
+      total:    `${total} TND`,
+      economie: `${savings} TND`,
+      notes:    form.notes || '—',
+      date:     now.toLocaleDateString('fr-FR'),
+      heure:    now.toLocaleTimeString('fr-FR'),
     };
 
     try {
-      // 1. Envoyer email via EmailJS
+      // 1. Email via EmailJS
       await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, data, EJS_KEY);
 
-      // 2. Sauvegarder dans Google Sheets
+      // 2. Google Sheets
       await fetch(SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -161,7 +157,6 @@ const savings       = (originalPrice - salePrice) * qty;
         <div className={styles.layout}>
 
           <aside className={styles.productCard}>
-
             <div className={styles.priceBlock}>
               <div className={styles.oldRow}>
                 <s className={styles.oldPrice}>{originalPrice} TND</s>
@@ -172,19 +167,17 @@ const savings       = (originalPrice - salePrice) * qty;
                 <span className={styles.per}>/unité</span>
               </div>
 
-              {/* ← Livraison */}
-      <div className={styles.livraisonRow}>
-        <span className={styles.livraisonLabel}>🚚 {t.form.livraison}</span>
-        <span className={styles.livraisonPrice}>{livraison} TND</span>
-      </div>
+              <div className={styles.livraisonRow}>
+                <span className={styles.livraisonLabel}>🚚 {t.form.livraison}</span>
+                <span className={styles.livraisonPrice}>{livraison} TND</span>
+              </div>
 
-              {/* ← Total avec livraison */}
-
-      <div className={styles.totalRow}>
-        <span className={styles.totalLabel}>{t.form.total} ({qty} {qty > 1 ? t.form.unites : t.form.unite})</span>
-        <span className={styles.totalPrice}>{total} TND</span>
-      </div>
+              <div className={styles.totalRow}>
+                <span className={styles.totalLabel}>{t.form.total} ({qty} {qty > 1 ? t.form.unites : t.form.unite})</span>
+                <span className={styles.totalPrice}>{total} TND</span>
+              </div>
             </div>
+
             <ul className={styles.trustList}>
               {TRUST_ITEMS.map(({ icon, label }) => (
                 <li key={label}>
@@ -196,26 +189,50 @@ const savings       = (originalPrice - salePrice) * qty;
           </aside>
 
           <div className={styles.formCard}>
-      <div className={styles.formHeader}>
-        <h3>{t.form.title}</h3>
-        <p>{t.form.subtitle}</p>
-      </div>
+            <div className={styles.formHeader}>
+              <h3>{t.form.title}</h3>
+              <p>{t.form.subtitle}</p>
+            </div>
 
-      <Field label={t.form.name} required error={errors.name}>
-        <input value={form.name} onChange={e => set('name', e.target.value)} placeholder={t.form.namePh} />
-      </Field>
+            <Field label={t.form.name} required error={errors.name}>
+              <input
+                value={form.name}
+                onChange={e => set('name', e.target.value)}
+                placeholder={t.form.namePh}
+              />
+            </Field>
 
-      <Field label={t.form.phone} required error={errors.phone}>
-        <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder={t.form.phonePh} type="tel" />
-      </Field>
+            <Field label={t.form.phone} required error={errors.phone}>
+              <input
+                value={form.phone}
+                onChange={e => set('phone', e.target.value)}
+                placeholder={t.form.phonePh}
+                type="tel"
+              />
+            </Field>
 
-      <Field label={t.form.address} required error={errors.address}>
-        <input value={form.address} onChange={e => set('address', e.target.value)} placeholder={t.form.addressPh} />
-      </Field>
+            <Field label={t.form.address} required error={errors.address}>
+              <input
+                value={form.address}
+                onChange={e => set('address', e.target.value)}
+                placeholder={t.form.addressPh}
+              />
+            </Field>
+
+            <Field label="Wilaya" required error={errors.wilaya}>
+              <select
+                value={form.wilaya}
+                onChange={e => set('wilaya', e.target.value)}
+              >
+                <option value="">— Choisir —</option>
+                {WILAYAS.map(w => (
+                  <option key={w} value={w}>{w}</option>
+                ))}
+              </select>
+            </Field>
 
             <div className={styles.grid2}>
-
-      <Field label={t.form.qty}>
+              <Field label={t.form.qty}>
                 <div className={styles.qtyRow}>
                   <button className={styles.qtyBtn} onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer">−</button>
                   <span className={styles.qtyVal}>{qty}</span>
@@ -223,7 +240,6 @@ const savings       = (originalPrice - salePrice) * qty;
                 </div>
               </Field>
             </div>
-
 
             <div className={styles.summary}>
               <div className={styles.summaryLeft}>
@@ -233,17 +249,17 @@ const savings       = (originalPrice - salePrice) * qty;
               <span className={styles.summaryTotal}>{total} TND</span>
             </div>
 
-      <button className={styles.btnBuy} onClick={handleSubmit} disabled={sending}>
-        <span className={styles.btnIcon}><IcoCart /></span>
-        <span>{sending ? t.form.sending : t.form.btn}</span>
-        {!sending && <span className={styles.btnArrow}><IcoArrow /></span>}
-      </button>
+            <button className={styles.btnBuy} onClick={handleSubmit} disabled={sending}>
+              <span className={styles.btnIcon}><IcoCart /></span>
+              <span>{sending ? t.form.sending : t.form.btn}</span>
+              {!sending && <span className={styles.btnArrow}><IcoArrow /></span>}
+            </button>
 
             {success && (
-        <div className={styles.successMsg}>
-          <IcoCheck />
-          <span>{t.form.success}</span>
-        </div>
+              <div className={styles.successMsg}>
+                <IcoCheck />
+                <span>{t.form.success}</span>
+              </div>
             )}
 
             <div className={styles.trust}>
