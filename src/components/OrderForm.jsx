@@ -108,19 +108,23 @@ export default function OrderForm({ selectedProduct }) {
     setSending(true);
 
     const now = new Date();
-    const data = {
-      nom:      form.name,
-      telephone: form.phone,
-      wilaya:   form.wilaya,
-      adresse:  form.address,
-      produit:  prodName,
-      quantite: qty,
-      total:    `${total} TND`,
-      economie: `${savings} TND`,
-      notes:    form.notes || '—',
-      date:     now.toLocaleDateString('fr-FR'),
-      heure:    now.toLocaleTimeString('fr-FR'),
-    };
+const nameParts = form.name.trim().split(' ');
+const prenom = nameParts[0] || '';
+const nom    = nameParts.slice(1).join(' ') || '—';
+
+const data = {
+  date:      now.toLocaleDateString('fr-FR'),
+  heure:     now.toLocaleTimeString('fr-FR'),
+  prenom:    prenom,
+  nom:       nom,
+  telephone: form.phone,
+  wilaya:    form.wilaya,
+  adresse:   form.address,
+  produit:   prodName,
+  quantite:  qty,
+  total:     `${total} TND`,
+  notes:     form.notes || '—',
+};
 
     try {
       // 1. Email via EmailJS
