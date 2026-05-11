@@ -34,8 +34,8 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  background: rgba(255,255,255,0.15);
-  border: 1.5px solid rgba(255,255,255,0.4);
+  background: #e01010;
+  border: 1.5px solid #e01010;
   color: #fff;
   font-size: .72rem;
   font-weight: 800;
@@ -46,7 +46,9 @@
   transition: background .2s, transform .2s;
   white-space: nowrap;
 }
+
 .langBtn:hover {
-  background: rgba(255,255,255,0.28);
+  background: #c00000;
+  border-color: #c00000;
   transform: translateY(-50%) scale(1.05);
 }
