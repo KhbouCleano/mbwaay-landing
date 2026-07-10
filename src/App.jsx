@@ -20,7 +20,7 @@ export default function App() {
       <Banner />
       <Hero selectedProduct={selectedProduct} />
       <Surfaces onSelectProduct={handleSelectProduct} />
-      <Footer />
+       <Footer />
     </>
   );
 }

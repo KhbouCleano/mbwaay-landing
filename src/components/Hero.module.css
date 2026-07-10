@@ -1,495 +1,67 @@
 /* ═══════════════════════════════════════════════
-   HERO – MBWAAY
+   HERO – MBWAAY (logo centré, sans vidéo, sans trust row)
    ═══════════════════════════════════════════════ */
 
 .hero {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(322deg, #3bbf17, #e9fae6, #ffffff, #1d71b9, #ed1313);
-  overflow: hidden;
-  padding-bottom: 60px;
+  background: #f4f5f7;
+  padding-bottom: 0px;
 }
 
-.heroBackground {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 0; overflow: hidden;
-}
-.heroBackgroundImage {
-  width: 100%; min-width: 300px; max-width: 500px;
-  height: auto; object-fit: contain; object-position: center;
-  opacity: 0.25; pointer-events: none;
-  position: absolute; top: 50%; left: 70%;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 10px 30px rgba(0,0,0,.1));
-}
-
-.heroOverlay {
-  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(255,255,255,.1);
-  z-index: 1; pointer-events: none;
-}
-
-/* ── GRADIENT CIRCLES ── */
-.gradientCircle {
-  position: absolute; width: 1200px; height: 1200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(237,19,19,.35) 0%, rgba(237,19,19,.2) 20%, rgba(237,19,19,.08) 45%, rgba(237,19,19,.02) 65%, transparent 100%);
-  top: 50%; right: -400px; transform: translateY(-50%);
-  z-index: 2; pointer-events: none;
-  animation: circlePulse 8s ease-in-out infinite;
-}
-.gradientCircleLarge {
-  position: absolute; width: 900px; height: 900px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(237,19,19,.3) 0%, rgba(237,19,19,.15) 25%, rgba(237,19,19,.05) 50%, transparent 75%);
-  bottom: -300px; left: -300px;
-  z-index: 2; pointer-events: none;
-  animation: circleFloatLarge 10s ease-in-out infinite;
-}
-.gradientCircleTopLeft {
-  position: absolute; width: 800px; height: 800px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(237,19,19,.25) 0%, rgba(237,19,19,.12) 30%, rgba(237,19,19,.03) 60%, transparent 85%);
-  top: -250px; left: -200px;
-  z-index: 2; pointer-events: none;
-  animation: circlePulseAlt 9s ease-in-out infinite;
-}
-.gradientCircleGreen {
-  position: absolute; width: 1000px; height: 1000px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,191,23,.25) 0%, rgba(59,191,23,.12) 25%, rgba(59,191,23,.04) 50%, transparent 75%);
-  top: -350px; right: -300px;
-  z-index: 2; pointer-events: none;
-  animation: circlePulseGreen 11s ease-in-out infinite;
-}
-.gradientCircleMix {
-  position: absolute; width: 1100px; height: 1100px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(237,19,19,.2) 0%, rgba(59,191,23,.1) 35%, rgba(255,255,255,.05) 55%, transparent 80%);
-  bottom: -400px; right: -250px;
-  z-index: 2; pointer-events: none;
-  animation: circleFloatMix 12s ease-in-out infinite;
-}
-
-@keyframes circlePulse {
-  0%,100% { transform: translateY(-50%) scale(1); opacity: .8; }
-  50%     { transform: translateY(-50%) scale(1.08); opacity: 1; }
-}
-@keyframes circleFloatLarge {
-  0%,100% { transform: translateY(0) translateX(0) scale(1); }
-  50%     { transform: translateY(-40px) translateX(30px) scale(1.05); }
-}
-@keyframes circlePulseAlt {
-  0%,100% { transform: scale(1); opacity: .6; }
-  50%     { transform: scale(1.12); opacity: .9; }
-}
-@keyframes circlePulseGreen {
-  0%,100% { transform: scale(1); opacity: .5; }
-  50%     { transform: scale(1.1); opacity: .8; }
-}
-@keyframes circleFloatMix {
-  0%,100% { transform: translateY(0) translateX(0) scale(1); }
-  50%     { transform: translateY(-35px) translateX(-25px) scale(1.06); }
-}
-
-/* ── BLOBS ── */
-.blob1, .blob2, .blob3 {
-  position: absolute; border-radius: 50%;
-  filter: blur(100px); pointer-events: none;
-  animation: blobFloat 8s ease-in-out infinite; z-index: 2;
-}
-.blob1 { width: 800px; height: 800px; background: rgba(59,191,23,.12); top: -200px; right: 10%; animation-delay: 0s; }
-.blob2 { width: 600px; height: 600px; background: rgba(237,19,19,.08); bottom: -100px; left: 0%; animation-delay: 3s; }
-.blob3 { width: 500px; height: 500px; background: rgba(59,191,23,.10); top: 40%; right: -100px; animation-delay: 5s; }
-
-@keyframes blobFloat {
-  0%,100% { transform: translateY(0) scale(1); }
-  50%     { transform: translateY(-40px) scale(1.08); }
-}
-
-/* ── LOGO ── */
-.logoCorner {
-  position: absolute; top: -20px; left: 7vw;
-  z-index: 10; display: block; transition: transform .2s;
-}
-.logoCorner:hover { transform: scale(1.04); }
-.logoCornerImg {
-  height: 200px; width: 200px; object-fit: contain;
-  filter: drop-shadow(0 4px 14px rgba(0,0,0,.18));
-}
-
-/* ══════════════════════════════════════════════
-   INNER GRID — DESKTOP
-   colonne 1          | colonne 2
-   ─────────────────────────────────────────────
-   titleWrapper       | imgSide (s'étire 2 lignes)
-   textSide           | imgSide
-   ══════════════════════════════════════════════ */
-.inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    "title   imgside"
-    "text    imgside";
-  gap: 16px 40px;
-  padding: 150px 5vw 80px;
-  position: relative;
-  z-index: 3;
-
-}
-
-
-.imgSide {
-  grid-area: imgside;
-  grid-row: 1 / 3;
+/* ── LOGO CENTRÉ ── */
+.logoWrap {
   display: flex;
-  flex-direction: column;       /* titre en haut, carte en dessous */
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0;
-  padding-top: 10px;
-  min-height: 520px;
+  justify-content: center;
+  padding-top: 24px;
   position: relative;
+  z-index: 20; /* ← toujours au-dessus de la carte, desktop et mobile */
 }
-.titleWrapper {
-  grid-area: unset;             /* plus dans la grille séparément */
-  width: 100%;
-  text-align: center;
-  padding: 10px 0 8px;
-  z-index: 5;
+.logoLink {
+  display: block;
+  transition: transform .2s;
+}
+.logoLink:hover { transform: scale(1.04); }
+.logoImg {
+  height: 130px;
+  width: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,.12));
+  display: block;
   position: relative;
+  top:-80px;
+  left:-15px;
+}
 
-}
-.textSide {
-  grid-area: text;
+/* ── INNER ── */
+.inner {
+  max-width: 480px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-/* ── TEXT ── */
-.h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  line-height: .88;
-  letter-spacing: .04em;
-  animation: fadeUp .6s .1s ease both;
-  display: flex;
-  flex-direction: row;   /* ← côte à côte */
   align-items: center;
-  justify-content: center;
-  gap: 16px;             /* ← espace entre POWER et CLEAN */
-}
-
-.line1 { font-size: clamp(3rem, 7vw, 6rem); color: #2a8a12; display: block; }
-.line2 { font-size: clamp(3rem, 7vw, 6rem); color: #ed1313; display: block; }
-
-.sub {
-  color: #333; font-size: 1.05rem; line-height: 1.7;
-  max-width: 440px; margin-top: 22px;
-  animation: fadeUp .6s .2s ease both;
-  background: rgba(255,255,255,.5);
-  padding: 12px 16px; border-radius: 16px;
-  backdrop-filter: blur(4px);
-}
-.sub strong { color: #ed1313; font-weight: 800; }
-
-.pills {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px;
-  animation: fadeUp .6s .3s ease both;
-}
-.pill {
-  background: rgba(59,191,23,.15);
-  border: 1px solid rgba(59,191,23,.3);
-  color: #2a8a12; padding: 7px 16px; border-radius: 50px;
-  font-size: .78rem; font-weight: 800; letter-spacing: .05em;
-  backdrop-filter: blur(4px);
-}
-
-.actions {
-  display: flex; gap: 18px; align-items: center; margin-top: 34px;
-  animation: fadeUp .6s .4s ease both;
-}
-.btnPrimary {
-  background: linear-gradient(135deg, #ed1313 0%, #b01010 100%);
-  color: #fff; font-weight: 900; font-size: 1rem;
-  padding: 16px 36px; border-radius: 50px; text-decoration: none;
-  box-shadow: 0 6px 28px rgba(237,19,19,.4); letter-spacing: .05em;
-  transition: transform .2s, box-shadow .2s;
-}
-.btnPrimary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(237,19,19,.55); }
-.btnSecondary {
-  color: #3bbf17; font-weight: 800; font-size: .95rem; text-decoration: none;
-  background: rgba(255,255,255,.3); padding: 8px 16px; border-radius: 50px;
-  border-bottom: 2px solid rgba(59,191,23,.4); transition: border-color .2s, color .2s;
-}
-.btnSecondary:hover { border-color: #3bbf17; color: #2a8a12; }
-
-.trust {
-  display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap;
-  animation: fadeUp .6s .5s ease both;
-}
-.trustItem {
-  display: flex; flex-direction: column; gap: 6px; align-items: center;
-  background: rgba(255,255,255,.5); padding: 8px 16px;
-  border-radius: 40px; backdrop-filter: blur(4px);
-}
-.trustStars { display: flex; gap: 3px; color: #ffc107; font-size: .85rem; }
-.trustIcon  { font-size: 1.1rem; color: #3bbf17; }
-.trustItem small { font-size: .72rem; color: #555; font-weight: 700; letter-spacing: .05em; }
-
-/* ══════════════════════════════════════════════
-   PRODUCT CARD
-   ══════════════════════════════════════════════ */
-.productCard {
-  width: 100%; max-width: 400px;
-  background: rgba(255,255,255,0);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255,255,255,.75); border-radius: 28px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 2px 8px rgba(59,191,23,.08);
-  overflow: hidden; transition: transform .3s, box-shadow .3s;
-  position: relative; z-index: 4;
-}
-.productCard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0,0,0,.16), 0 4px 16px rgba(59,191,23,.10);
-}
-
-.cardBadgeRow {
-  position: absolute; top: 14px; left: 14px; right: 14px;
-  display: flex; justify-content: space-between; align-items: center;
-  z-index: 5; pointer-events: none;
-}
-.badgeDiscount {
-  background: #ed1313; color: #fff; font-size: .72rem; font-weight: 900;
-  padding: 4px 12px; border-radius: 50px; letter-spacing: .06em;
-  box-shadow: 0 2px 8px rgba(237,19,19,.35);
-}
-.badgeTopVente {
-  background: #111; color: #fff; font-size: .68rem; font-weight: 800;
-  padding: 4px 12px; border-radius: 50px; letter-spacing: .06em;
-}
-
-.cardImgWrap {
+  padding: 20px 5vw 60px;
   position: relative;
-  background: linear-gradient(160deg, #f0faf0 0%, #fff5f5 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 170px 10px 20px;
-  min-height: 620px;   /* ← augmenté */
-  overflow: hidden;
-}
-.cardProductImg {
-  height: clamp(420px, 55vh, 520px);
-  object-fit: contain;
-  filter: drop-shadow(0 16px 36px rgba(0,0,0,.20));
-  animation: cardFloat 5s ease-in-out infinite;
-  position: relative; z-index: 1;
-}
-@keyframes cardFloat {
-  0%,100% { transform: translateY(0) rotate(-1deg); }
-  50%     { transform: translateY(-14px) rotate(1deg); }
-}
-
-.cardVideoBtn {
-  position: absolute; bottom: 14px; right: 14px;
-  display: flex; align-items: center; gap: 7px;
-  background: rgba(0,0,0,.70); backdrop-filter: blur(8px);
-  color: #fff; font-size: .72rem; font-weight: 800;
-  letter-spacing: .05em; text-transform: uppercase;
-  padding: 8px 16px; border-radius: 50px; cursor: pointer; z-index: 3;
-  border: 1px solid rgba(255,255,255,.20);
-  transition: background .2s, transform .2s; user-select: none;
-}
-.cardVideoBtn:hover { background: rgba(237,19,19,.85); transform: scale(1.05); }
-
-.cardVideoOverlay { position: absolute; inset: 0; z-index: 2; background: #000; }
-.cardVideoEl { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cardVideoControls {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 14px;
-  background: linear-gradient(transparent, rgba(0,0,0,.75));
-}
-.vcBtn {
-  background: none; border: none; cursor: pointer;
-  color: #fff; font-size: .9rem; padding: 4px; transition: color .2s;
-}
-.vcBtn:hover { color: #3bbf17; }
-.vcLabel { font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.85); letter-spacing: .04em; }
-
-/* ── WAVE ── */
-.wave {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 80px; pointer-events: none; z-index: 3;
-}
-.wave svg { width: 100%; height: 100%; display: block; }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ══════════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════════ */
-@media (max-width: 820px) {
-  .inner {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      "imgside"
-      "text";
-    text-align: center;
-    padding-top: 130px;
-    gap: 20px;
-  }
-
-  .imgSide {
-    grid-row: auto;
-    min-height: auto;
-    justify-content: flex-start;
-  }
-
-  .titleWrapper {
-    padding: 8px 0 6px;
-    margin-top: 40px;   /* ← décaler vers le bas */
-  }
-
-  .pills   { justify-content: center; }
-  .actions { justify-content: center; flex-wrap: wrap; }
-  .sub     { margin: 22px auto 0; }
-  .trust   { justify-content: center; }
-
-  .logoCorner    { top: 54px; }
-  .logoCornerImg { height: 52px; width: 52px; position: relative; top: auto; left: auto; }
-
-  .gradientCircle, .gradientCircleLarge,
-  .gradientCircleTopLeft, .gradientCircleGreen,
-  .gradientCircleMix { display: none; }
-
-  .productCard    { max-width: 340px; }
-  .cardImgWrap    { min-height: 300px; padding: 56px 10px 10px; }
-  .cardProductImg { height: clamp(240px, 38vh, 320px); }
-}
-
-@media (max-width: 480px) {
-  .inner { padding: 50px 4vw 60px; }
-
-  .logoCornerImg {
-    height: 170px; width: 170px;
-    position: absolute; top: -105px; left: 100px;
-  }
-
-  .productCard    { max-width: 100%; border-radius: 20px; }
-  .cardImgWrap    { min-height: 260px; padding: 50px 8px 8px; }
-  .cardProductImg { height: clamp(200px, 34vh, 280px); }
-  .cardVideoBtn   { font-size: .65rem; padding: 7px 12px; }
-
-  .actions { flex-direction: column; align-items: center; }
-  .btnPrimary, .btnSecondary { width: 100%; text-align: center; }
-}
-/* Le titre flotte EN HAUT de cardImgWrap */
-.titleWrapper {
-  position: absolute;
-  top: 50px;          /* juste sous les badges */
-  left: 0;
-  right: 0;
-  z-index: 6;
-  text-align: center;
-  pointer-events: none;
-}
-
-/* h1 plus compact dans la carte */
-.h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  line-height: .88;
-  letter-spacing: .04em;
-  animation: fadeUp .6s .1s ease both;
-}
-.line1 { font-size: clamp(3rem, 7vw, 6rem); color: #2a8a12; display: block; }
-.line2 { font-size: clamp(3rem, 7vw, 6rem); color: #ed1313; display: block; }
-
-/* Assez de padding en haut pour que le titre ne chevauche pas l'image */
-.cardImgWrap {
-  position: relative;
-  background: linear-gradient(160deg, #f0faf0 0%, #fff5f5 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 170px 10px 10px;  /* ← augmenté pour laisser place au titre */
-  min-height: 520px;
-  overflow: hidden;
-}
-
-.cardProductImg {
-  height: clamp(280px, 40vh, 380px);
-  object-fit: contain;
-  filter: drop-shadow(0 16px 36px rgba(0,0,0,.20));
-  animation: cardFloat 5s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 820px) {
-  .inner {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      "imgside"
-      "text";
-    text-align: center;
-    padding-top: 130px;
-    gap: 20px;
-  }
-
-  .imgSide {
-    grid-row: auto;
-    min-height: auto;
-    justify-content: flex-start;
-  }
-
-  .titleWrapper {
-    top: 406px;
-  }
-
-  .cardImgWrap {
-    min-height: 420px;
-    padding: 150px 10px 10px;
-  }
-
-  .cardProductImg { height: clamp(220px, 35vh, 300px); }
-
-  .pills   { justify-content: center; }
-  .actions { justify-content: center; flex-wrap: wrap; }
-  .sub     { margin: 22px auto 0; }
-  .trust   { justify-content: center; }
-
-  .logoCorner    { top: 54px; }
-  .logoCornerImg { height: 52px; width: 52px; position: relative; top: auto; left: auto; }
-
-  .gradientCircle, .gradientCircleLarge,
-  .gradientCircleTopLeft, .gradientCircleGreen,
-  .gradientCircleMix { display: none; }
-
-  .productCard { max-width: 340px; }
+@media (min-width: 901px) {
+  .inner { max-width: 1080px; }
+  .logoImg { height: 170px; width: 170px; }
 }
 
+@media (min-width: 1200px) {
+  .inner { max-width: 1260px; }
+  .logoImg { height: 200px; width: 200px; }
+}
 @media (max-width: 480px) {
-  .inner { padding: 50px 4vw 60px; }
+  .logoWrap { padding-top: 16px; }
+  .logoImg { height: 100px; width: 100px;   position: relative;
+                                            top:-50px;
+                                            left:-5px; }
+  .inner { padding: 14px 4vw 50px; }
+}
 
-  .logoCornerImg {
-    height: 170px; width: 170px;
-    position: absolute; top: -105px; left: 100px;
-  }
-
-  .titleWrapper { top: 42px; }
-
-  .cardImgWrap    { min-height: 380px; padding: 140px 8px 8px; }
-  .cardProductImg { height: clamp(180px, 30vh, 260px); }
-  .cardVideoBtn   { font-size: .65rem; padding: 7px 12px; }
-  .productCard    { max-width: 100%; border-radius: 20px; }
-
-  .actions { flex-direction: column; align-items: center; }
-  .btnPrimary, .btnSecondary { width: 100%; text-align: center; }
+@media (max-width: 360px) {
+  .logoImg { height: 84px; width: 84px; }
 }

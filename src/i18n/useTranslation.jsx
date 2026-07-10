@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import fr from './fr.json';
 import ar from './ar.json';
 
@@ -9,14 +9,17 @@ export function useLang() {
 }
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState('fr');
+  const [lang, setLang] = useState('ar'); // ← arabe par défaut à l'ouverture
   const t = lang === 'ar' ? ar : fr;
 
+  // Applique dir/lang sur <html> dès le premier rendu (et à chaque changement)
+  useEffect(() => {
+    document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   function toggleLang() {
-    const next = lang === 'fr' ? 'ar' : 'fr';
-    setLang(next);
-    document.documentElement.dir  = next === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = next;
+    setLang(prev => (prev === 'fr' ? 'ar' : 'fr'));
   }
 
   return (

@@ -1,7 +1,8 @@
 .banner {
-  background: linear-gradient(90deg, var(--green) 0%, var(--green2) 50%, var(--green) 100%);
+  background: linear-gradient(90deg, #e8192f 0%, #ff4d5e 50%, #e8192f 100%);
   overflow: hidden; white-space: nowrap;
   height: 38px; display: flex; align-items: center;
+  position: relative;  /* ← pour positionner le bouton */
 }
 .track {
   display: inline-flex;
@@ -24,9 +25,6 @@
   vertical-align: middle;
   margin-right: 6px;
 }
-.banner {
-  position: relative;  /* ← pour positionner le bouton */
-}
 
 .langBtn {
   position: absolute;
@@ -34,9 +32,9 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  background: #e01010;
-  border: 1.5px solid #e01010;
-  color: #fff;
+  background: #ffffff;
+  border: 1.5px solid #ffffff;
+  color: #e8192f;
   font-size: .72rem;
   font-weight: 800;
   padding: 4px 12px;
@@ -48,7 +46,6 @@
 }
 
 .langBtn:hover {
-  background: #c00000;
-  border-color: #c00000;
+  background: #f2f2f2;
   transform: translateY(-50%) scale(1.05);
 }
