@@ -8,6 +8,14 @@ import img4  from '../assets/image4.png';
 import img5  from '../assets/image5.png';
 import img7  from '../assets/image7.png';
 import img11 from '../assets/image11.png';
+import imgCuisineGrid from '../assets/3 (2).png';
+import imgCuisineAvis from '../assets/3 (1).png';
+import imgCuisineMain from '../assets/3 (1).jpg';
+
+// Ces 3 fichiers sont dans /public (pas dans /src/assets), donc on les référence par leur chemin direct
+const imgPowerCleanMain = '/power-clean-main.png';
+const imgPowerCleanGallery1 = '/gallery-1.jpg';
+const imgPowerCleanGallery2 = '/gallery-2.png';
 
 export const PRODUCTS = [
   {
@@ -47,6 +55,8 @@ export const PRODUCTS = [
     color: '#ed1313',
     gradient: 'linear-gradient(160deg, #f0faf0 0%, #fff5f5 100%)',
     image: img2,
+    orderImage: imgPowerCleanMain,
+    gallery: [imgPowerCleanGallery1, imgPowerCleanGallery2],
   },
   {
     id: 3,
@@ -121,6 +131,8 @@ export const PRODUCTS = [
     color: '#e87820',
     gradient: 'linear-gradient(160deg, #fff3e0 0%, #fff8f0 100%)',
     image: img11,
+    orderImage: imgCuisineMain,
+    gallery: [imgCuisineGrid, imgCuisineAvis],
       video: 'https://res.cloudinary.com/dgrepqv2c/video/upload/v1778505323/Kit_yphy5c.mp4',
 
   },

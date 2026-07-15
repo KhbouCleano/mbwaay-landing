@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './OrderForm.module.css';
 import emailjs from '@emailjs/browser';
 import { useLang } from '../i18n/useTranslation.jsx';
+import { PRODUCTS } from './Surfaces';
+
+// Produit affiché par défaut tant qu'aucun produit n'a encore été cliqué
+const DEFAULT_PRODUCT = PRODUCTS.find(p => p.id === 2); // Power Clean
 
 const EJS_SERVICE  = 'service_bwd9ism';
 const EJS_TEMPLATE = 'template_zc7bwex';
@@ -12,9 +16,6 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzWyOyX6j-c7uKwHG9e78
 const INITIAL = {
   name: '', phone: '', wilaya: '', notes: '',
 };
-
-// Photos par défaut si selectedProduct.gallery n'est pas fourni
-const DEFAULT_GALLERY = ['/gallery-1.jpg', '/gallery-2.png'];
 
 const WILAYAS = [
   'Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan',
@@ -56,7 +57,7 @@ const FOOTER_TRUST = [
   { icon: <IcoTruck />, label: 'Livraison gratuite' },
 ];
 
-export default function OrderForm({ selectedProduct }) {
+export default function OrderForm({ selectedProduct = DEFAULT_PRODUCT }) {
   const { t } = useLang();
 
   const [form, setForm]       = useState(INITIAL);
@@ -65,12 +66,19 @@ export default function OrderForm({ selectedProduct }) {
   const [sending, setSending] = useState(false);
   const [errors, setErrors]   = useState({});
 
-  const prodName  = selectedProduct?.name  || 'MBWAAY Power Clean';
-  const prodImage = selectedProduct?.image || '/power-clean-main.png';
-  // Optionnel : selectedProduct.gallery = ['/img1.png','/img2.png']
-  const gallery   = selectedProduct?.gallery || DEFAULT_GALLERY;
+  const prodName  = selectedProduct?.name  || DEFAULT_PRODUCT.name;
+  // orderImage = photo dédiée à afficher dans le formulaire de commande (sinon on reprend l'image de la carte produit)
+  const prodImage = selectedProduct?.orderImage || selectedProduct?.image || DEFAULT_PRODUCT.orderImage;
+  // gallery = les 2 petites photos affichées à côté de la grande (spécifiques à chaque produit)
+  const gallery   = selectedProduct?.gallery || DEFAULT_PRODUCT.gallery || [];
 
   const [activeImg, setActiveImg] = useState(prodImage);
+
+  // À chaque changement de produit sélectionné, on remet la grande image
+  // sur la photo principale de CE produit (sinon l'ancienne image reste affichée).
+  useEffect(() => {
+    setActiveImg(prodImage);
+  }, [prodImage]);
 
   const originalPrice = 21;
   const salePrice     = 17;
